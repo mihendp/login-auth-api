@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import dev.miguel.login_auth_api.domain.user.User;
-import org.hibernate.type.descriptor.java.ZoneOffsetJavaType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,7 @@ public class TokenService {
     public String generateToken(User user){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
+            System.out.println(this.generateExpirationDate());
 
             String token = JWT.create()
                     .withIssuer("login-api-auth")
@@ -49,7 +49,7 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.ofHours(3));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
 }
